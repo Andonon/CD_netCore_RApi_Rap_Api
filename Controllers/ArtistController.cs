@@ -10,9 +10,44 @@ namespace MusicApi.Controllers {
 
         private List<Artist> allArtists;
 
-        public ArtistController() {
+        public ArtistController() 
+        {
             allArtists = JsonToFile<Artist>.ReadJson();
         }
+
+        [HttpGet]
+            [Route("artists")]
+            public JsonResult Artist()
+            {
+                
+                return Json(allArtists);
+            }
+
+        [HttpGet]
+            [Route("artist/{Name}")]
+            public IActionResult GetArtistName(string Name)
+            {
+                var foundArtist = from artist in allArtists
+                                    where artist.ArtistName == Name
+                                    select new { artist };
+                return Json(foundArtist);
+            }
+
+        [HttpGet]
+            [Route("artists/name/{Name}")]
+            public IActionResult GetArtistsByName(string Name)
+            {
+                var foundArtists = from artists in allArtists where artists.ArtistName.Contains(Name) select artists;
+                return Json(foundArtists);                 
+            }
+
+        [HttpGet]
+            [Route("artists/realname/{Name}")]
+            public IActionResult GetArtistsByRealName(string Name)
+            {
+                var foundArtists = from artists in allArtists where artists.RealName.Contains(Name) select artists;
+                return Json(foundArtists);                 
+            }
 
         //This method is shown to the user navigating to the default API domain name
         //It just display some basic information on how this API functions
@@ -34,5 +69,7 @@ namespace MusicApi.Controllers {
             instructions += "       *ListArtists=?(true/false)\n";
             return instructions;
         }
+
+        
     }
 }
