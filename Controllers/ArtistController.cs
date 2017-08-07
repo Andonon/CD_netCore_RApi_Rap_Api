@@ -49,6 +49,22 @@ namespace MusicApi.Controllers {
                 return Json(foundArtists);                 
             }
 
+        [HttpGet]
+            [Route("artists/hometown/{town}")]
+            public IActionResult GetArtistsByHomeTown(string town)
+            {
+                var foundArtists = from artists in allArtists where artists.Hometown.Contains(town) select artists;
+                return Json(foundArtists);                 
+            }
+
+        [HttpGet]
+            [Route("artists/groupid/{id}")]
+            public IActionResult GetArtistsByGroupId(string id)
+            {
+                var foundArtists = from artists in allArtists where artists.GroupId.ToString() == id select artists;
+                return Json(foundArtists);                 
+            }
+
         //This method is shown to the user navigating to the default API domain name
         //It just display some basic information on how this API functions
         [Route("")]
